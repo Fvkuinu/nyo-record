@@ -1,4 +1,5 @@
 import React, { FC, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface AccordionProps {
     title: string;
@@ -12,13 +13,35 @@ const Accordion: FC<AccordionProps> = ({ title, children }) => {
         setIsOpen(!isOpen);
     };
 
+    // アコーディオンのコンテンツアニメーション設定
+    const contentVariants = {
+        hidden: { opacity: 0, height: 0 },
+        visible: { opacity: 1, height: 'auto' },
+    };
+
     return (
-        <div className="accordion">
-            <div className="accordion-header" onClick={toggleOpen}>
-                <h3>{title}</h3>
-                <span>{isOpen ? '-' : '+'}</span>
+        <div className="bg-white shadow-md rounded-lg mb-4">
+            <div
+                className="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100 transition-colors"
+                onClick={toggleOpen}
+            >
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <span className="text-xl">{isOpen ? '-' : '+'}</span>
             </div>
-            {isOpen && <div className="accordion-content">{children}</div>}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        className="overflow-hidden p-4"
+                        variants={contentVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        transition={{ duration: 0.3 }}
+                    >
+                        {children}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
