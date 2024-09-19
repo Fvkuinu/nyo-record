@@ -67,7 +67,7 @@ const EditUser = ({params}) => {
                     type="text"
                     value={record.password}
                     onChange={(e) => setRecord(e.target.value)}
-                    placeholder="パスワード"
+                    placeholder="パスワードa"
                 />
             </div>
             <button onClick={handleUpdateRecord}>保存</button>
