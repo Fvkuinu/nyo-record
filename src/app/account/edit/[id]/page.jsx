@@ -1,16 +1,11 @@
-// クライアントコンポーネントとして指定
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { getRecordById, updateRecord } from '@/app/lib/nyoRecordController'; // 必要な関数をインポート
+import React, {useEffect, useState} from 'react';
+import {getRecordById, updateRecord} from '@/app/lib/nyoRecordController';
 
-const EditNyo = ({ params }) => {
-    const router = useRouter();
-    const id = params.id; // URLのidパラメータを取得
+const EditUser = ({params}) => {
+    const id = params.id;
     const [record, setRecord] = useState(null);
-    const [editDateTime, setEditDateTime] = useState('');
-    const [editRemarks, setEditRemarks] = useState('');
 
     // dateTimeをdatetime-local形式に変換する関数
     const formatDateTimeForInput = (dateTime) => {
@@ -25,20 +20,12 @@ const EditNyo = ({ params }) => {
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     };
 
-    // 空白をTに戻して保存用に変換
-    const formatDateTimeForSave = (dateTime) => {
-        return dateTime.replace(' ', 'T');
-    };
-
     // 記録を取得してフォームに表示する
     const fetchRecord = async () => {
         if (id) {
             try {
                 const fetchedRecord = await getRecordById(parseInt(id, 10));
                 setRecord(fetchedRecord);
-                // fetchedRecord.dateTime を空白付きの形式に変換してセット
-                setEditDateTime(formatDateTimeForInput(fetchedRecord.dateTime));
-                setEditRemarks(fetchedRecord.remarks || '');
             } catch (error) {
                 console.error("Error fetching record: ", error);
             }
@@ -52,9 +39,7 @@ const EditNyo = ({ params }) => {
     // 記録を更新する
     const handleUpdateRecord = async () => {
         try {
-            // 空白をTに戻して保存
-            const formattedDateTime = new Date(editDateTime);
-            await updateRecord(record.id, formattedDateTime, editRemarks);
+            await updateRecord(record.id, record.userName, record.password);
             router.push('/'); // 更新後にリストページに戻る
         } catch (error) {
             console.error("Error updating record:", error);
@@ -67,27 +52,25 @@ const EditNyo = ({ params }) => {
 
     return (
         <div>
-            <h2>尿記録の編集</h2>
+            <h2>ユーザーの編集</h2>
             <div>
-                <label>日時</label>
+                <label>ユーザー名</label>
                 <input
-                    type="datetime-local"
-                    value={editDateTime}
-                    onChange={(e) => setEditDateTime(e.target.value)}
+                    type="text"
+                    value={record.userName}
+                    onChange={(e) => setRecord(e.target.value)}
                 />
             </div>
             <div>
-                <label>備考</label>
+                <label>パスワード</label>
                 <input
                     type="text"
-                    value={editRemarks}
-                    onChange={(e) => setEditRemarks(e.target.value)}
-                    placeholder="備考"
+                    value={record.password}
+                    onChange={(e) => setRecord(e.target.value)}
+                    placeholder="パスワード"
                 />
             </div>
             <button onClick={handleUpdateRecord}>保存</button>
         </div>
     );
 }
-
-export default EditNyo;

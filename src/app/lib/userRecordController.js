@@ -9,7 +9,9 @@ import prisma from '@/app/lib/prisma'; // PrismaClientのインポート
  * @param {string} password - 暗号化されたパスワード
  * @returns 作成されたユーザーデータ
  */
-export async function createUser(username, password) {
+export async function createRecord(data) {
+    const username = data.get("username");
+    const password = data.get("password");
     try {
         const user = await prisma.user.create({
             data: {
@@ -31,7 +33,7 @@ export async function createUser(username, password) {
  * @param {string} password - 更新後のパスワード（暗号化済み、省略可能）
  * @returns 更新されたユーザーデータ
  */
-export async function updateUser(userId, username, password) {
+export async function updateRecord(userId, username, password) {
     try {
         const updatedUser = await prisma.user.update({
             where: { id: userId },
@@ -53,7 +55,7 @@ export async function updateUser(userId, username, password) {
  * @param {number} userId - ユーザーID
  * @returns 削除されたユーザーデータ
  */
-export async function deleteUser(userId) {
+export async function deleteRecord(userId) {
     try {
         const deletedUser = await prisma.user.delete({
             where: { id: userId },
@@ -70,7 +72,7 @@ export async function deleteUser(userId) {
  * @param {number} userId - ユーザーID
  * @returns 取得されたユーザーデータ
  */
-export async function getUserById(userId) {
+export async function getRecordById(userId) {
     try {
         const user = await prisma.user.findUnique({
             where: { id: userId },
@@ -87,7 +89,7 @@ export async function getUserById(userId) {
  * @param {string} username - ユーザー名
  * @returns 取得されたユーザーデータ
  */
-export async function getUserByUsername(username) {
+export async function getRecordByUsername(username) {
     try {
         const user = await prisma.user.findUnique({
             where: { username: username },
