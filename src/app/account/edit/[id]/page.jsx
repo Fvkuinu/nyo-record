@@ -1,48 +1,42 @@
 "use client";
 
-import React, {useEffect, useState} from 'react';
-import {getRecordById, updateRecord} from '@/app/lib/nyoRecordController';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { getRecordById, updateRecord } from '@/app/lib/nyoRecordController';
+import InputField from '@/app/ui/InputField';
+import Button from '@/app/ui/Button';
+import Form from '@/app/ui/Form';
+import { useToast } from '@/app/hooks/useToast'; // useToast をインポート
 
-const EditUser = ({params}) => {
+const EditUserRecord = ({ params }) => {
+    const router = useRouter();
     const id = params.id;
     const [record, setRecord] = useState(null);
-
-    // dateTimeをdatetime-local形式に変換する関数
-    const formatDateTimeForInput = (dateTime) => {
-        const date = new Date(dateTime);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getMinutes()).padStart(2, '0');
-        // Tを空白に変換
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    };
-
-    // 記録を取得してフォームに表示する
-    const fetchRecord = async () => {
-        if (id) {
-            try {
-                const fetchedRecord = await getRecordById(parseInt(id, 10));
-                setRecord(fetchedRecord);
-            } catch (error) {
-                console.error("Error fetching record: ", error);
-            }
-        }
-    };
+    const { showToast, ToastComponent } = useToast(); // useToast の呼び出し
 
     useEffect(() => {
+        const fetchRecord = async () => {
+            if (id) {
+                try {
+                    const fetchedRecord = await getRecordById(parseInt(id, 10));
+                    setRecord(fetchedRecord);
+                } catch (error) {
+                    console.error("Error fetching record: ", error);
+                    showToast("データの取得に失敗しました", "error", 3000); // トーストを表示
+                }
+            }
+        };
         fetchRecord();
-    }, [id]);
+    }, [id, showToast]);
 
-    // 記録を更新する
     const handleUpdateRecord = async () => {
         try {
             await updateRecord(record.id, record.userName, record.password);
-            router.push('/'); // 更新後にリストページに戻る
+            showToast("更新に成功しました", "success", 3000); // 成功時にトーストを表示
+            router.push('/');
         } catch (error) {
             console.error("Error updating record:", error);
+            showToast("更新に失敗しました", "error", 3000); // エラー時にトーストを表示
         }
     };
 
@@ -53,24 +47,27 @@ const EditUser = ({params}) => {
     return (
         <div>
             <h2>ユーザーの編集</h2>
-            <div>
-                <label>ユーザー名</label>
-                <input
-                    type="text"
+            {ToastComponent} {/* トーストコンポーネントの描画 */}
+            <Form onSubmit={handleUpdateRecord}>
+                <InputField
+                    label="ユーザー名"
                     value={record.userName}
-                    onChange={(e) => setRecord(e.target.value)}
+                    onChange={(e) =>
+                        setRecord((prev) => ({ ...prev, userName: e.target.value }))
+                    }
                 />
-            </div>
-            <div>
-                <label>パスワード</label>
-                <input
-                    type="text"
+                <InputField
+                    label="パスワード"
+                    type="password"
                     value={record.password}
-                    onChange={(e) => setRecord(e.target.value)}
-                    placeholder="パスワードa"
+                    onChange={(e) =>
+                        setRecord((prev) => ({ ...prev, password: e.target.value }))
+                    }
                 />
-            </div>
-            <button onClick={handleUpdateRecord}>保存</button>
+                <Button label="保存" onClick={handleUpdateRecord} />
+            </Form>
         </div>
     );
-}
+};
+
+export default EditUserRecord;
