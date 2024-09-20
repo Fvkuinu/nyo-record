@@ -27,3 +27,7 @@ body {
     text-wrap: balance;
   }
 }
+.selected-date {
+  background-color: #3498db; /* 選択した日付の背景色を青に */
+  color: white; /* 文字色を白に */
+}

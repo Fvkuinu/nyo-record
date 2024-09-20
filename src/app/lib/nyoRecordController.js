@@ -83,3 +83,33 @@ export async function getRecordById(recordId) {
         throw error;
     }
 }
+/**
+ * 特定の日付に基づいて尿記録を取得する関数
+ * @param {Date} date - 取得したい日付
+ * @returns その日の記録データの配列
+ */
+export async function getRecordsByDate(date) {
+    try {
+        // dateが文字列の場合、まずDateオブジェクトに変換
+        const dateObj = new Date(date);
+
+        // 日付の開始と終了を設定
+        const startOfDay = new Date(dateObj.setHours(0, 0, 0, 0));
+        const endOfDay = new Date(dateObj.setHours(23, 59, 59, 999));
+
+        const records = await prisma.record.findMany({
+            where: {
+                dateTime: {
+                    gte: startOfDay,
+                    lte: endOfDay,
+                },
+            },
+        });
+        return records;
+    } catch (error) {
+        console.error("Error retrieving records for date:", error);
+        throw error;
+    }
+}
+
+
