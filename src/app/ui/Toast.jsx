@@ -1,14 +1,7 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-interface ToastProps {
-    message: string;
-    type: 'success' | 'error' | 'info';
-    duration: number; // 表示時間 (ミリ秒)
-    onComplete: () => void; // トーストが消えた後に呼ばれるコールバック
-}
-
-const Toast: FC<ToastProps> = ({ message, type, duration, onComplete }) => {
+const Toast = ({ message, type, duration, onComplete }) => {
     useEffect(() => {
         // duration 後にトーストを非表示にする
         const timer = setTimeout(() => {

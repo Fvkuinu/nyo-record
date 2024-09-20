@@ -1,13 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
-interface DropdownProps {
-    options: string[];
-    selected: string;
-    onChange: (value: string) => void;
-}
-
-const Dropdown: FC<DropdownProps> = ({ options, selected, onChange }) => {
+const Dropdown = ({ options, selected, onChange }) => {
     return (
         <div className="relative">
             <motion.select

@@ -1,12 +1,7 @@
-import React, { FC, ReactNode, FormEvent } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
-interface FormProps {
-    children: ReactNode; // フォーム内の要素
-    onSubmit: (event: FormEvent<HTMLFormElement>) => void; // フォームの送信時のイベントハンドラ
-}
-
-const Form: FC<FormProps> = ({ children, onSubmit }) => {
+const Form = ({ children, onSubmit }) => {
     return (
         <motion.form
             onSubmit={onSubmit}

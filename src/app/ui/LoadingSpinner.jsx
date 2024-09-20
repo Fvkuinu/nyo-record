@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
-const LoadingSpinner: FC = () => {
+const LoadingSpinner = () => {
     // アニメーションのバリエーション (Framer Motion)
     const bounceVariants = {
         start: { scale: 0 },

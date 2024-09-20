@@ -20,5 +20,4 @@ const UiPage = ({params}) => {
         </div>
     );
 };
-
 export default UiPage;

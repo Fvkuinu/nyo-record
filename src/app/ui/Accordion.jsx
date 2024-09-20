@@ -1,12 +1,7 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface AccordionProps {
-    title: string;
-    children: React.ReactNode;
-}
-
-const Accordion: FC<AccordionProps> = ({ title, children }) => {
+const Accordion = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleOpen = () => {

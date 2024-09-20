@@ -1,14 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
-interface InputFieldProps {
-    label: string;
-    type?: string;
-    value: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const InputField: FC<InputFieldProps> = ({ label, type = 'text', value, onChange }) => {
+const InputField = ({ label, type = 'text', value, onChange }) => {
     return (
         <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">{label}</label>

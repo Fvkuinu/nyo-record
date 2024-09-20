@@ -1,13 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
-interface CardProps {
-    title: string;
-    content: string;
-    footer?: React.ReactNode;
-}
-
-const Card: FC<CardProps> = ({ title, content, footer }) => {
+const Card = ({ title, content, footer }) => {
     return (
         <motion.div
             className="bg-white rounded-lg shadow-md p-6 mb-4 transition-transform transform hover:scale-105"

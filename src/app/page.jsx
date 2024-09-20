@@ -7,11 +7,12 @@ const App = () => {
     const [textInput, setTextInput] = useState('');
     const [textAreaInput, setTextAreaInput] = useState('');
 
-    const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // イベントハンドラに e を追加
+    const handleTextChange = (e) => {
         setTextInput(e.target.value);
     };
 
-    const handleTextAreaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const handleTextAreaChange = (e) => {
         setTextAreaInput(e.target.value);
     };
 
@@ -33,6 +34,3 @@ const App = () => {
 };
 
 export default App;
-
-
-

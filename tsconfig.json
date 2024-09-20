@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/layout.js", "src/app/page.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/layout.js", "src/app/page.jsx", "src/app/layout.jsx", "src/app/ui/Accordion.jsx", "src/app/ui/Button.jsx", "src/app/ui/Card.jsx", "src/app/ui/Dropdown.jsx", "src/app/ui/Form.jsx", "src/app/ui/InputField.jsx", "src/app/ui/LoadingSpinner.jsx", "src/app/ui/Pagination.jsx", "src/app/ui/Modal.jsx", "src/app/ui/Toast.jsx", "src/app/ui/ToastNotification.jsx"],
   "exclude": ["node_modules"]
 }
