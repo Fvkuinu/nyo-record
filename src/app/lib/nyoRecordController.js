@@ -112,4 +112,16 @@ export async function getRecordsByDate(date) {
     }
 }
 
-
+/**
+ * 全ての尿記録を取得する関数
+ * @returns 全ての記録データの配列
+ */
+export async function getAllRecords() {
+    try {
+        const records = await prisma.record.findMany(); // 全ての記録を取得
+        return records;
+    } catch (error) {
+        console.error("Error fetching all records:", error);
+        throw error;
+    }
+}

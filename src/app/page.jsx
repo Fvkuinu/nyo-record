@@ -15,6 +15,7 @@ const CalendarPage = () => {
     const fetchAllRecords = async () => {
         try {
             const records = await getAllRecords();
+            console.log(records);
             const eventData = records.reduce((acc, record) => {
                 const dateStr = new Date(record.dateTime).toISOString().split('T')[0]; // 日付をISO形式に変換
                 if (!acc[dateStr]) {
@@ -41,6 +42,7 @@ const CalendarPage = () => {
     const fetchRecordsByDate = async (date) => {
         try {
             const recordsForDate = await getRecordsByDate(date);
+            console.log(recordsForDate);
             setRecords(recordsForDate);
         } catch (error) {
             console.error("Error fetching records by date:", error);
