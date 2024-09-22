@@ -22,7 +22,14 @@ export default function AddRecord() {
         const user = auth.currentUser; // Get the current logged-in user
 
         if (!user) {
-            alert('ログインが必要です。');
+            toast({
+                title: 'ログインが必要です。',
+                description: '操作を続けるにはログインが必要です。',
+                status: 'warning',
+                duration: 4000,
+                isClosable: true,
+                position: 'top-right',
+            });
             setIsSubmitting(false);
             return;
         }
@@ -35,7 +42,7 @@ export default function AddRecord() {
 
             await createRecord(user.uid, date, remarks);
 
-            // Show success toast instead of redirecting
+            // Show success toast
             toast({
                 title: 'レコードが追加されました。',
                 description: '新しいレコードが正常に追加されました。',
@@ -46,7 +53,6 @@ export default function AddRecord() {
             });
 
             setIsSubmitting(false);
-            // No redirect needed, just show the toast
         } catch (error) {
             console.error('エラーが発生しました:', error);
             toast({
