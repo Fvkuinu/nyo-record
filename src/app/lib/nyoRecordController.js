@@ -114,3 +114,7 @@ export const deleteRecord = async (recordId) => {
         throw new Error('レコードの削除に失敗しました');
     }
 };
+
+//仮
+export const getRecordById = () => { /* 実装 */ };
+export const updateRecord = () => { /* 実装 */ };
