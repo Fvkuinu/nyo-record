@@ -18,7 +18,7 @@ const Footer = () => {
             </div>
 
             {/* コピーライト情報 */}
-            <p className="text-sm">© 2024 My App. All Rights Reserved.</p>
+            <p className="text-sm">© 2024 Fvkuinu. All Rights Reserved.</p>
         </footer>
     );
 };

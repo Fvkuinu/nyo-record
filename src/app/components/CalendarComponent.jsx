@@ -1,4 +1,3 @@
-// ✅ クライアントコンポーネント
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -6,11 +5,12 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { getJapaneseHolidays } from '@/app/lib/holidayApi'; // 祝日取得APIをインポート
+import { useTheme } from 'next-themes'; // next-themes for theme management
 
 const CalendarComponent = ({ events, onDateClick, selectedDate }) => {
     const [currentSelectedDate, setCurrentSelectedDate] = useState(null);
     const [holidays, setHolidays] = useState({}); // 日本の祝日を保存する状態
-
+    const { theme } = useTheme(); // Get current theme from next-themes
     // 日本の祝日を取得する
     useEffect(() => {
         const fetchHolidays = async () => {
@@ -26,14 +26,14 @@ const CalendarComponent = ({ events, onDateClick, selectedDate }) => {
         if (currentSelectedDate) {
             const prevSelectedCell = document.querySelector(`td[data-date='${currentSelectedDate}']`);
             if (prevSelectedCell) {
-                prevSelectedCell.classList.remove('bg-blue-200', 'text-white');
+                prevSelectedCell.classList.remove('bg-blue-200', 'bg-opacity-40', 'text-white');
             }
         }
 
         // 新しく選択された日付の背景色を変更
         const selectedCell = document.querySelector(`td[data-date='${dateStr}']`);
         if (selectedCell) {
-            selectedCell.classList.add('bg-blue-200', 'text-black');
+            selectedCell.classList.add('bg-blue-200', 'bg-opacity-40', 'text-black');
         }
 
         setCurrentSelectedDate(dateStr);
@@ -54,7 +54,7 @@ const CalendarComponent = ({ events, onDateClick, selectedDate }) => {
         const dateStr = date.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
 
         // 土曜日は青、日曜日と祝日は赤
-        let textColor = 'text-black'; // デフォルトは黒
+        let textColor = theme === 'dark' ? 'text-gray-300' : 'text-black'; // デフォルトは黒（ダークモードではグレー）
 
         if (dayOfWeek === 0 || (holidays && holidays[dateStr])) {
             textColor = 'text-red-500'; // 日曜日と祝日は赤
@@ -74,13 +74,17 @@ const CalendarComponent = ({ events, onDateClick, selectedDate }) => {
         if (selectedDate) {
             const selectedCell = document.querySelector(`td[data-date='${selectedDate}']`);
             if (selectedCell) {
-                selectedCell.classList.add('bg-blue-200', 'text-black');
+                selectedCell.classList.add('bg-blue-200', 'bg-opacity-40', 'text-black');
             }
         }
     }, [selectedDate]);
 
     return (
-        <div className="mb-6 w-full max-w-full">
+        <div
+            className={`mb-6 w-full max-w-full ${
+                theme === 'dark' ? 'bg-gray-900 text-gray-300' : 'bg-white text-black'
+            }`} // Apply different background and text colors based on theme
+        >
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
@@ -90,6 +94,7 @@ const CalendarComponent = ({ events, onDateClick, selectedDate }) => {
                 dayCellContent={renderDayCellContent} // 日付の表示をカスタマイズ
                 height="auto"
                 contentHeight="auto"
+                timeZone="Asia/Tokyo" // 日本時間に設定
                 aspectRatio={window.innerWidth < 640 ? 1 : 1.5} // レスポンシブ対応
                 headerToolbar={{
                     start: 'title', // will normally be on the left. if RTL, will be on the right
@@ -103,7 +108,14 @@ const CalendarComponent = ({ events, onDateClick, selectedDate }) => {
                         classNames: 'sm:text-sm md:text-lg lg:text-xl font-bold text-center'
                     }
                 }}
-                // ツールバーのレスポンシブスタイル
+                // ツールバーと曜日ヘッダーの色を調整（ダークモード）
+                headerClassNames={`${
+                    theme === 'dark' ? 'text-white bg-gray-900' : ''
+                }`}
+                // Weekday names (Monday, Tuesday, etc.) styling for dark mode
+                dayHeaderClassNames={`${
+                    theme === 'dark' ? 'text-black' : 'text-black'
+                }`}
                 className="text-sm sm:text-base md:text-lg lg:text-xl flex flex-wrap justify-between items-center"
             />
         </div>

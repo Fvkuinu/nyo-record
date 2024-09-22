@@ -31,7 +31,7 @@ const Error404Page = () => {
         align-items: center;
         flex-direction: column;
         min-height: 100vh;
-        background-color: #1a1a1a;
+        background-color: #ffffff00;
         color: white;
         font-family: 'Arial', sans-serif;
         text-align: center;

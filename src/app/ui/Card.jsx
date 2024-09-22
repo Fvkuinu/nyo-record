@@ -1,18 +1,30 @@
+// src/components/ui/Card.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from 'next-themes';
 
 const Card = ({ title, content, footer }) => {
+    const { theme } = useTheme();
+
     return (
         <motion.div
-            className="bg-white rounded-lg shadow-md p-6 mb-4 transition-transform transform hover:scale-105"
+            className={`${
+                theme === 'dark'
+                    ? 'bg-gray-800 text-white'
+                    : 'bg-white text-gray-700'
+            } rounded-lg shadow-md p-6 mb-4 transition-transform transform hover:scale-105`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
         >
-            <h3 className="text-xl font-bold mb-2">{title}</h3>
-            <p className="text-gray-700 mb-4">{content}</p>
-            {footer && <div className="border-t pt-4">{footer}</div>}
+            {/* ヘッダー部分 */}
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold">{title}</h3>
+                {footer && <div>{footer}</div>}
+            </div>
+            {/* コンテンツ部分 */}
+            <p>{content}</p>
         </motion.div>
     );
 };

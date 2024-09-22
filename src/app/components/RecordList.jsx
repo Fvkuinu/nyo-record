@@ -1,0 +1,105 @@
+// src/app/components/RecordList.jsx
+import React, { useState } from 'react';
+import { useToast } from '@chakra-ui/react';
+import Card from '@/app/ui/Card';
+import Button from '@/app/ui/Button';
+import Dialog from '@/app/ui/Dialog';
+import useDialog from '@/app/hooks/useDialog';
+import CollapsibleSection from '@/app/ui/CollapsibleSection'; // Import the updated collapsible section
+
+const RecordList = ({ records, selectedDate, onDelete }) => {
+    const toast = useToast();
+    const { isOpen, openDialog, closeDialog } = useDialog();
+    const [activeRecordId, setActiveRecordId] = useState(null); // State to track the active record to delete
+
+    if (!selectedDate) {
+        return <p className="text-gray-500">Please select a date.</p>;
+    }
+
+    if (records.length === 0) {
+        return <p className="text-gray-500">No records for the selected date.</p>;
+    }
+
+    // Handle record deletion and feedback
+    const confirmAndDelete = async () => {
+        try {
+            await onDelete(activeRecordId); // Delete the active record
+            toast({
+                title: 'Record deleted successfully',
+                description: 'The record has been deleted.',
+                status: 'success',
+                duration: 3000,
+                isClosable: true,
+                position: 'top-right',
+            });
+            closeDialog();
+        } catch (error) {
+            toast({
+                title: 'Error deleting record',
+                description: `Failed to delete record: ${error.message}`,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top-right',
+            });
+        }
+    };
+
+    return (
+        <CollapsibleSection title={`Records for ${selectedDate}`}>
+            {records.map((record) => {
+                let dateObj;
+                if (record.dateTime && typeof record.dateTime.toDate === 'function') {
+                    dateObj = record.dateTime.toDate();
+                } else if (record.dateTime instanceof Date) {
+                    dateObj = record.dateTime;
+                } else {
+                    dateObj = new Date(record.dateTime);
+                }
+
+                const isValidDate = dateObj instanceof Date && !isNaN(dateObj);
+
+                function getHourMin() {
+                    if (!isValidDate) return 'Invalid Date';
+                    const [hours, minutes] = dateObj.toLocaleTimeString().split(':');
+                    return `${hours}:${minutes}`;
+                }
+
+                return (
+                    <React.Fragment key={record.id}>
+                        <Card
+                            title={getHourMin()}
+                            content={record.remarks}
+                            footer={
+                                <Button
+                                    variant="danger"
+                                    onClick={() => {
+                                        setActiveRecordId(record.id); // Set the record to delete
+                                        openDialog(); // Open the confirmation dialog
+                                    }}
+                                >
+                                    Delete
+                                </Button>
+                            }
+                        />
+                    </React.Fragment>
+                );
+            })}
+
+            {/* Confirmation dialog */}
+            <Dialog isOpen={isOpen} onClose={closeDialog} title="Confirm Deletion">
+                <p className="mb-4">Are you sure you want to delete this record?</p>
+                <div className="flex justify-end space-x-2">
+                    <Button variant="secondary" onClick={closeDialog}>
+                        Cancel
+                    </Button>
+                    <Button variant="danger" onClick={confirmAndDelete}>
+                        Delete
+                    </Button>
+                </div>
+            </Dialog>
+        </CollapsibleSection>
+    );
+};
+
+export default RecordList;

@@ -36,22 +36,27 @@ const GlobalNav = ({ onClose }) => {
             <ul className="text-center space-y-6 text-2xl">
                 <motion.li variants={linkVariants} whileHover="hover">
                     <Link href="/" onClick={onClose} className="hover:text-blue-500">
-                        Home
+                        HOME
                     </Link>
                 </motion.li>
                 <motion.li variants={linkVariants} whileHover="hover">
-                    <Link href="/products" onClick={onClose} className="hover:text-blue-500">
-                        Products
+                    <Link href="/dashboard" onClick={onClose} className="hover:text-blue-500">
+                        DASHBOARD
                     </Link>
                 </motion.li>
                 <motion.li variants={linkVariants} whileHover="hover">
-                    <Link href="/about" onClick={onClose} className="hover:text-blue-500">
-                        About
+                    <Link href="/analytics" onClick={onClose} className="hover:text-blue-500">
+                        ANALYTICS
                     </Link>
                 </motion.li>
                 <motion.li variants={linkVariants} whileHover="hover">
-                    <Link href="/contact" onClick={onClose} className="hover:text-blue-500">
-                        Contact
+                    <Link href="/nyo/create" onClick={onClose} className="hover:text-blue-500">
+                        CREATE
+                    </Link>
+                </motion.li>
+                <motion.li variants={linkVariants} whileHover="hover">
+                    <Link href="/logout" onClick={onClose} className="hover:text-blue-500">
+                        LOGOUT
                     </Link>
                 </motion.li>
             </ul>

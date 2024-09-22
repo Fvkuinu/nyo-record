@@ -5,7 +5,7 @@ const Form = ({ children, onSubmit }) => {
     return (
         <motion.form
             onSubmit={onSubmit}
-            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+            className="bg-white dark:bg-gray-800 shadow-md dark:shadow-lg rounded px-8 pt-6 pb-8 mb-4"
             initial={{ opacity: 0, y: 20 }} // 初期状態
             animate={{ opacity: 1, y: 0 }} // 表示状態
             exit={{ opacity: 0, y: -20 }} // 非表示状態

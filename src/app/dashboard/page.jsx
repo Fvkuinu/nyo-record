@@ -1,10 +1,10 @@
+// src/pages/CalendarPage.jsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CalendarComponent from '@/app/components/CalendarComponent';
 import RecordList from '@/app/components/RecordList';
-import HourChart from '@/app/components/HourChart'; // Import HourChart component
-import LoadingSpinner from '@/app/ui/LoadingSpinner';
+import LoadingSpinner from '@/app/ui/LoadingSpinner'; // Use the loading spinner
 import useAuth from '@/app/hooks/useAuth';
 import useRecords from '@/app/hooks/useRecords';
 
@@ -23,11 +23,12 @@ const CalendarPage = () => {
     // Set the initial selected date to today's date
     const [selectedDate, setSelectedDate] = useState(getTodayDate());
 
-    // useRecords now only filters by day based on selectedDate
-    const { records, events, isLoading, error, handleDelete } = useRecords(user?.uid, 'day', selectedDate);
-    
+    const { records, events, isLoading, error, handleDelete } = useRecords(user?.uid, selectedDate);
+
     const handleDateClick = (dateStr) => {
-        setSelectedDate(dateStr); // Set the clicked date as the selected date
+        // 選択した日付をYYYY-MM-DD形式に変換
+        const selectedDateFormatted = new Date(dateStr).toISOString().split('T')[0];
+        setSelectedDate(dateStr);
     };
 
     // Show the loading spinner while authentication is in progress
@@ -44,22 +45,19 @@ const CalendarPage = () => {
             <h2 className="text-2xl font-bold mb-4">記録カレンダー</h2>
             {user ? (
                 <>
-                    <CalendarComponent 
+                    <CalendarComponent
                         events={events} // Pass all time-based records as events
-                        onDateClick={handleDateClick} 
+                        onDateClick={handleDateClick}
                         selectedDate={selectedDate}
                     />
                     {isLoading ? (
                         <LoadingSpinner />
                     ) : (
-                        <>
-                            <RecordList 
-                                records={records} // Only pass records for the selected date
-                                selectedDate={selectedDate}
-                                onDelete={handleDelete} 
-                            />
-                            <HourChart records={records} /> {/* Render the HourChart with the selected records */}
-                        </>
+                        <RecordList
+                            records={records} // Only pass records for the selected date
+                            selectedDate={selectedDate}
+                            onDelete={handleDelete}
+                        />
                     )}
                     {error && <p className="text-red-500 mt-4">エラーが発生しました: {error.message}</p>}
                 </>
