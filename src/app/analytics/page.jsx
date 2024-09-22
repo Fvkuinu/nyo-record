@@ -17,7 +17,7 @@ const AnalyticsPage = () => {
     const [selectedDate, setSelectedDate] = useState(null);
     const [chartType, setChartType] = useState('bar');
 
-    const { records, events, isLoading, error } = useRecords(user?.uid, filterType, selectedDate);
+    const { records, isLoading, error } = useRecords(user?.uid, filterType, selectedDate);
 
     // 日ごとのデータをフォーマット
     const formatDataForDay = (records) => {

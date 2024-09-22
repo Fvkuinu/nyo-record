@@ -52,19 +52,6 @@ const Error404Page = () => {
         margin-bottom: 20px;
     `;
 
-    const buttonStyle = css`
-        background-color: #3b82f6;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        &:hover {
-            background-color: #2563eb;
-        }
-    `;
-
     // アニメーションの設定
     const imageVariants = {
         hidden: { opacity: 0, scale: 0.8 },

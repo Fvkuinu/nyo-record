@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Use Next.js navigation
 import { signOut } from 'firebase/auth';
 import { auth } from '@/app/lib/firebase/client'; // Import the initialized auth instance
 import Link from 'next/link'; // Link to navigate back to the homepage
 
 const LogoutPage = () => {
-    const router = useRouter();
 
     useEffect(() => {
         // Sign out the user when the component is mounted

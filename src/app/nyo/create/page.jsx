@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { getAuth } from 'firebase/auth';
 import { useToast } from '@chakra-ui/react'; // Toast import
 import Input from '@/app/ui/InputField'; // User input component
@@ -13,7 +12,6 @@ export default function AddRecord() {
     const [remarks, setRemarks] = useState(''); // State for remarks input
     const [dateTime, setDateTime] = useState(''); // State for date-time input
     const [isSubmitting, setIsSubmitting] = useState(false); // Submitting state
-    const router = useRouter();
     const toast = useToast(); // Initialize toast
 
     const auth = getAuth(); // Firebase Auth instance

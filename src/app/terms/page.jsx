@@ -69,8 +69,7 @@ const TermsOfService = () => {
                 <section>
                     <h2 className="text-2xl font-semibold mb-2">5. Limitation of Liability</h2>
                     <p>
-                        We are not liable for any damages or losses arising from the use of our services. Our services
-                        are provided "as is" without warranty of any kind.
+                        We are not liable for any damages or losses arising from the use of our services.
                     </p>
                 </section>
 

@@ -1,6 +1,6 @@
 // src/app/hooks/useAuth.js
 import { useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/app/lib/firebase/client'; // Import initialized auth instance
 
 const useAuth = () => {
