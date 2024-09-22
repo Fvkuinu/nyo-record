@@ -2,20 +2,19 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaHeartbeat, FaBars } from 'react-icons/fa'; // Only keeping the Apple and Bars icons
-import GlobalNav from './GlobalNav'; // Global Navigation Component
-import Button from '@/app/ui/Button'; // Button Component
-import ThemeToggle from '@/app/components/ThemeToggle'; // Theme Toggle Component
-import { motion } from 'framer-motion'; // Framer Motion for animations
-import { auth } from '@/app/lib/firebase/client'; // Import initialized auth instance
+import { FaHeartbeat, FaBars } from 'react-icons/fa';
+import GlobalNav from './GlobalNav';
+import Button from '@/app/ui/Button';
+import ThemeToggle from '@/app/components/ThemeToggle';
+import { motion } from 'framer-motion';
+import { auth } from '@/app/lib/firebase/client';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const Header = () => {
     const [isNavOpen, setIsNavOpen] = useState(false);
-    const [user, setUser] = useState(null); // Track user state
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
-        // Monitor authentication state
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             if (currentUser) {
                 setUser(currentUser);
@@ -24,16 +23,13 @@ const Header = () => {
             }
         });
 
-        // Cleanup subscription on unmount
         return () => unsubscribe();
     }, []);
 
-    // Toggle global navigation
     const toggleNav = () => {
         setIsNavOpen(!isNavOpen);
     };
 
-    // Retrieve username (first 6 characters of the email + 'さん')
     const getUsername = () => {
         if (user && user.email) {
             const emailPrefix = user.email.substring(0, 6);
@@ -44,7 +40,7 @@ const Header = () => {
 
     return (
         <header className="bg-black text-white p-4 flex justify-between items-center">
-            {/* Left: Apple logo */}
+            {/* Left: Heartbeat logo */}
             <motion.div>
                 <Link href="/">
                     <FaHeartbeat className="text-2xl cursor-pointer" />
@@ -53,10 +49,8 @@ const Header = () => {
 
             {/* Right: User info, Theme Toggle, and Navigation Toggle */}
             <div className="flex items-center space-x-6">
-                {/* Theme toggle button */}
                 <ThemeToggle />
 
-                {/* Show username or login button based on auth state */}
                 {user ? (
                     <span className="text-sm">
                         {getUsername()}
@@ -75,8 +69,8 @@ const Header = () => {
                 </Button>
             </div>
 
-            {/* Global navigation */}
-            {isNavOpen && <GlobalNav onClose={toggleNav} />}
+            {/* Global navigation with isNavOpen prop */}
+            <GlobalNav onClose={toggleNav} isNavOpen={isNavOpen} />
         </header>
     );
 };
