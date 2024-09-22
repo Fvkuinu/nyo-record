@@ -37,7 +37,7 @@ const Layout = ({ children }) => {
                             // Show the full page content once loading is complete
                             <>
                                 <Header />
-                                <main className="p-6 flex-grow">
+                                <main className="p-0 flex-grow">
                                     {children}
                                 </main>
                                 <Footer />
