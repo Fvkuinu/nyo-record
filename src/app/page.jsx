@@ -13,11 +13,11 @@ const HomePage = () => {
                 "people", "nature", "city", "food", "animals", "technology",
                 "travel", "sports", "fashion", "architecture", "music", "art",
                 "sunset", "mountains", "ocean", "cars", "friends", "work",
-                "beauty", "health", "education", "hobbies", "festivals", 
-                "space", "vintage", "lifestyle", "meditation", "adventure", 
-                "family", "pets", "landscapes", "culture", "historical", 
-                "nightlife", "street", "urban", "emotions", "inspiration", 
-                "self-care", "wellness", "skills", "fun", "celebrations", 
+                "beauty", "health", "education", "hobbies", "festivals",
+                "space", "vintage", "lifestyle", "meditation", "adventure",
+                "family", "pets", "landscapes", "culture", "historical",
+                "nightlife", "street", "urban", "emotions", "inspiration",
+                "self-care", "wellness", "skills", "fun", "celebrations",
                 "community", "outdoors", "workout", "relaxation", "interiors"
             ];
 
@@ -38,10 +38,11 @@ const HomePage = () => {
     return (
         <div className="relative w-full h-screen">
             {/* 動画背景 */}
-            <video 
-                autoPlay 
-                muted 
-                loop 
+            <video
+                autoPlay
+                muted
+                loop
+                playsinline
                 className="absolute top-0 left-0 w-full h-full object-cover"
                 src={videoUrl}
             >
@@ -53,8 +54,8 @@ const HomePage = () => {
 
             {/* 中央コンテンツ */}
             <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
-                <h1 className="text-4xl font-bold mb-4">画期的な記録を実現</h1>
-                <p className="text-lg mb-8">
+                <h1 className="text-4xl font-bold mb-4 mx-2">画期的な記録を実現</h1>
+                <p className="text-lg mb-8 mx-2">
                     スマートなデータ管理と革新的な方法で、あなたの記録を未来へ導きます。
                 </p>
 
