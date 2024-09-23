@@ -13,9 +13,9 @@ const AnalyticsPage = () => {
     const auth = getAuth();
     const user = auth.currentUser;
 
-    const [filterType, setFilterType] = useState('日');
+    const [filterType, setFilterType] = useState('day');
     const [selectedDate, setSelectedDate] = useState(null);
-    const [chartType, setChartType] = useState('棒グラフ');
+    const [chartType, setChartType] = useState('bar');
 
     const { records, isLoading, error } = useRecords(user?.uid, filterType, selectedDate);
 
@@ -32,7 +32,7 @@ const AnalyticsPage = () => {
         return {
             labels: hours,
             datasets: [{
-                label: '1時間あたりの回数',
+                label: '回数',
                 data,
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -45,7 +45,7 @@ const AnalyticsPage = () => {
     // 週ごとのデータをフォーマット
     // 週ごとのデータをフォーマット (週の始まりを月曜日に設定)
     const formatDataForWeek = (records) => {
-        const daysOfWeek = ['月', '火', '水', '木', '金', '土', '日'];
+        const daysOfWeek = ['月', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         const data = Array(7).fill(0);
 
         records.forEach(record => {
@@ -57,7 +57,7 @@ const AnalyticsPage = () => {
         return {
             labels: daysOfWeek,
             datasets: [{
-                label: '1日あたりの回数',
+                label: '回数',
                 data,
                 backgroundColor: 'rgba(153, 102, 255, 0.6)',
                 borderColor: 'rgba(153, 102, 255, 1)',
@@ -82,7 +82,7 @@ const AnalyticsPage = () => {
         return {
             labels: days,
             datasets: [{
-                label: '1日あたりの回数',
+                label: 'Records per Day',
                 data,
                 backgroundColor: 'rgba(255, 206, 86, 0.6)',
                 borderColor: 'rgba(255, 206, 86, 1)',
@@ -94,8 +94,7 @@ const AnalyticsPage = () => {
 
     // 年ごとのデータをフォーマット
     const formatDataForYear = (records) => {
-        const months = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
-        ;
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         const data = Array(12).fill(0);
 
         records.forEach(record => {
@@ -106,7 +105,7 @@ const AnalyticsPage = () => {
         return {
             labels: months,
             datasets: [{
-                label: 'ひと月あたりの回数',
+                label: 'Records per Month',
                 data,
                 backgroundColor: 'rgba(54, 162, 235, 0.6)',
                 borderColor: 'rgba(54, 162, 235, 1)',
@@ -118,10 +117,10 @@ const AnalyticsPage = () => {
 
     const formatChartData = () => {
         switch (filterType) {
-            case '日': return formatDataForDay(records);
-            case '週': return formatDataForWeek(records);
-            case '月': return formatDataForMonth(records);
-            case '年': return formatDataForYear(records);
+            case 'day': return formatDataForDay(records);
+            case 'week': return formatDataForWeek(records);
+            case 'month': return formatDataForMonth(records);
+            case 'year': return formatDataForYear(records);
             default: return { labels: [], datasets: [] };
         }
     };
@@ -133,25 +132,25 @@ const AnalyticsPage = () => {
         maintainAspectRatio: false,
         plugins: {
             legend: { labels: { color: theme === 'dark' ? '#fff' : '#000' } },
-            title: { display: true, text: '分析結果', color: theme === 'dark' ? '#fff' : '#000' },
+            title: { display: true, text: 'Analytics Chart', color: theme === 'dark' ? '#fff' : '#000' },
         },
         scales: {
             y: {
                 beginAtZero: true,
                 max: chartData.maxValue ? Math.ceil(chartData.maxValue * 1.25) : 6,
                 ticks: { color: theme === 'dark' ? '#fff' : '#000', stepSize: 1 },
-                title: { display: true, text: '回数', color: theme === 'dark' ? '#fff' : '#000' },
+                title: { display: true, text: 'Number of Records', color: theme === 'dark' ? '#fff' : '#000' },
             },
             x: {
                 ticks: { color: theme === 'dark' ? '#fff' : '#000' },
-                title: { display: true, text: '時間', color: theme === 'dark' ? '#fff' : '#000' },
+                title: { display: true, text: 'Time', color: theme === 'dark' ? '#fff' : '#000' },
             },
         },
     };
 
     return (
         <div className="container mx-auto p-4">
-            <h2 className="text-2xl font-bold mb-4">分析</h2>
+            <h2 className="text-2xl font-bold mb-4">Analytics</h2>
             <AnalyticsFilters
                 filterType={filterType}
                 setFilterType={setFilterType}

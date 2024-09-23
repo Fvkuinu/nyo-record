@@ -20,7 +20,7 @@ const AnalyticsChart = ({ chartData, chartType, isLoading, error, options }) => 
 
     return (
         <div className="chart-container" style={{ height: '400px' }}>
-            {chartType === '棒グラフ' ? (
+            {chartType === 'bar' ? (
                 <Bar data={chartData} options={options} />
             ) : (
                 <Line data={chartData} options={options} />
