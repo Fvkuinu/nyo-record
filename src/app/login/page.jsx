@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@chakra-ui/react'; // Toast import
-import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from 'firebase/auth';
 import Input from '@/app/ui/InputField';
 import Button from '@/app/ui/Button';
 import ModalSpinner from '@/app/ui/ModalSpinner';
@@ -22,7 +22,7 @@ export default function LoginForm() {
 
     try {
       // Set session persistence
-      await setPersistence(auth, browserSessionPersistence);
+      await setPersistence(auth, browserLocalPersistence);
       // Authenticate with email and password
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       console.log('Login successful:', userCredential.user);

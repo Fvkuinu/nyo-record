@@ -75,21 +75,21 @@ const useRecords = (userId, filterType, selectedDate) => {
 
         let start, end;
         switch (filterType) {
-            case 'day':
+            case '日':
                 start = new Date(selectedDate);
                 start.setHours(0, 0, 0, 0);
                 end = new Date(selectedDate);
                 end.setHours(23, 59, 59, 999);
                 break;
-            case 'week':
+            case '週':
                 start = startOfWeek(new Date(selectedDate), { weekStartsOn: 1 }); // 月曜日開始
                 end = endOfWeek(new Date(selectedDate), { weekStartsOn: 1 });
                 break;
-            case 'month':
+            case '月':
                 start = startOfMonth(new Date(selectedDate));
                 end = endOfMonth(new Date(selectedDate));
                 break;
-            case 'year':
+            case '年':
                 start = startOfYear(new Date(selectedDate));
                 end = endOfYear(new Date(selectedDate));
                 break;

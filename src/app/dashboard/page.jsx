@@ -24,7 +24,7 @@ const CalendarPage = () => {
     const [selectedDate, setSelectedDate] = useState(getTodayDate());
 
     // useRecords now only filters by day based on selectedDate
-    const { records, events, isLoading, error, handleDelete } = useRecords(user?.uid, 'day', selectedDate);
+    const { records, events, isLoading, error, handleDelete } = useRecords(user?.uid, '日', selectedDate);
     
     const handleDateClick = (dateStr) => {
         setSelectedDate(dateStr); // Set the clicked date as the selected date
