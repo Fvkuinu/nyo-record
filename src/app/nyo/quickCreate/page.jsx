@@ -25,7 +25,7 @@ export default function SaveTimeButton() {
         status: 'error',
         duration: 4000,
         isClosable: true,
-        position: 'top-right',
+        position: 'bottom-right',
       });
       setIsSubmitting(false);
       return;
@@ -44,7 +44,7 @@ export default function SaveTimeButton() {
         status: 'success',
         duration: 4000,
         isClosable: true,
-        position: 'top-right',
+        position: 'bottom-right',
       });
 
       setIsButtonDisabled(true); // ボタンを無効化
@@ -57,7 +57,7 @@ export default function SaveTimeButton() {
         status: 'error',
         duration: 5000,
         isClosable: true,
-        position: 'top-right',
+        position: 'bottom-right',
       });
       setIsSubmitting(false); // エラー時にも送信状態を終了
     }

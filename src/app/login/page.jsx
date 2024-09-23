@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@chakra-ui/react'; // Toast import
 import { getAuth, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from 'firebase/auth';
 import Input from '@/app/ui/InputField';
 import Button from '@/app/ui/Button';
@@ -12,7 +13,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [isAuthing, setIsAuthing] = useState(false);
   const router = useRouter();
-
+  const toast = useToast(); // Initialize toast
   // Firebase authentication function
   const authenticationUser = async (email, password) => {
     const auth = getAuth();  // Initialize Firebase Auth
@@ -28,7 +29,14 @@ export default function LoginForm() {
       router.push('/dashboard');  // Redirect to dashboard after successful login
     } catch (error) {
       console.error('Login error:', error);
-      alert('ログインに失敗しました。');  // Show error message
+      toast({
+        title: 'ログインに失敗しました',
+        description: `ログインに失敗しました: ${error.message}`,
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'bottom-right',
+      });
     } finally {
       setIsAuthing(false);  // Reset loading state
     }
@@ -41,7 +49,7 @@ export default function LoginForm() {
         <Input
           name="email"
           type="email"
-          label="Email"
+          label="メールアドレス"
           placeholder="メールアドレスを入力"
           onChange={(e) => setEmail(e.target.value)}
           className="dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"  // Dark mode styles
@@ -51,7 +59,7 @@ export default function LoginForm() {
         <Input
           name="password"
           type="password"
-          label="Password"
+          label="パスワード"
           placeholder="パスワードを入力"
           onChange={(e) => setPassword(e.target.value)}
           className="dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"  // Dark mode styles

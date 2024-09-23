@@ -40,34 +40,34 @@ const GlobalNav = ({ onClose, isNavOpen }) => {
                     {/* ナビゲーションのリンク */}
                     <ul className="text-center space-y-6 text-2xl">
                         <motion.li variants={linkVariants} whileHover="hover">
-                            <Link href="/" onClick={onClose} className="hover:text-blue-500 line-through">
-                                HOME
+                            <Link href="/" onClick={onClose} className="hover:text-blue-500">
+                                トップ
                             </Link>
                         </motion.li>
 
                         <motion.li variants={linkVariants} whileHover="hover">
                             <Link href="/dashboard" onClick={onClose} className="hover:text-blue-500">
-                                DASHBOARD
+                                記録を見る
                             </Link>
                         </motion.li>
                         <motion.li variants={linkVariants} whileHover="hover">
                             <Link href="/analytics" onClick={onClose} className="hover:text-blue-500">
-                                ANALYTICS
+                                分析
                             </Link>
                         </motion.li>
                         <motion.li variants={linkVariants} whileHover="hover">
                             <Link href="/nyo/create" onClick={onClose} className="hover:text-blue-500">
-                                CREATE
+                                追加
                             </Link>
                         </motion.li>
                         <motion.li variants={linkVariants} whileHover="hover">
                             <Link href="/nyo/quickCreate" onClick={onClose} className="hover:text-blue-500">
-                                QUICK CREATE
+                                即時追加
                             </Link>
                         </motion.li>
                         <motion.li variants={linkVariants} whileHover="hover">
                             <Link href="/logout" onClick={onClose} className="hover:text-blue-500">
-                                LOGOUT
+                                ログアウト
                             </Link>
                         </motion.li>
                     </ul>

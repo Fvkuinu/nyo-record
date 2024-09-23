@@ -28,7 +28,7 @@ export default function AddRecord() {
                 status: 'warning',
                 duration: 4000,
                 isClosable: true,
-                position: 'top-right',
+                position: 'bottom-right',
             });
             setIsSubmitting(false);
             return;
@@ -49,7 +49,7 @@ export default function AddRecord() {
                 status: 'success',
                 duration: 4000,
                 isClosable: true,
-                position: 'top-right',
+                position: 'bottom-right',
             });
 
             setIsSubmitting(false);
@@ -61,7 +61,7 @@ export default function AddRecord() {
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
-                position: 'top-right',
+                position: 'bottom-right',
             });
             setIsSubmitting(false);
         }

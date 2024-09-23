@@ -32,7 +32,7 @@ const AnalyticsPage = () => {
         return {
             labels: hours,
             datasets: [{
-                label: 'Records per Hour',
+                label: '回数',
                 data,
                 backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -45,7 +45,7 @@ const AnalyticsPage = () => {
     // 週ごとのデータをフォーマット
     // 週ごとのデータをフォーマット (週の始まりを月曜日に設定)
     const formatDataForWeek = (records) => {
-        const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const daysOfWeek = ['月', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         const data = Array(7).fill(0);
 
         records.forEach(record => {
@@ -57,7 +57,7 @@ const AnalyticsPage = () => {
         return {
             labels: daysOfWeek,
             datasets: [{
-                label: 'Records per Day',
+                label: '回数',
                 data,
                 backgroundColor: 'rgba(153, 102, 255, 0.6)',
                 borderColor: 'rgba(153, 102, 255, 1)',

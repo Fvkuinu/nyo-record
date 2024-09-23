@@ -25,28 +25,28 @@ const RecordList = ({ records, selectedDate, onDelete }) => {
         try {
             await onDelete(activeRecordId); // Delete the active record
             toast({
-                title: 'Record deleted successfully',
-                description: 'The record has been deleted.',
+                title: '記録を削除しました',
+                description: '記録の削除に成功しました',
                 status: 'success',
                 duration: 3000,
                 isClosable: true,
-                position: 'top-right',
+                position: 'bottom-right',
             });
             closeDialog();
         } catch (error) {
             toast({
-                title: 'Error deleting record',
-                description: `Failed to delete record: ${error.message}`,
+                title: '記録を削除できませんでした',
+                description: `記録の削除に失敗しました: ${error.message}`,
                 status: 'error',
                 duration: 5000,
                 isClosable: true,
-                position: 'top-right',
+                position: 'bottom-right',
             });
         }
     };
 
     return (
-        <CollapsibleSection title={`Records for ${selectedDate}`}>
+        <CollapsibleSection title={`${selectedDate} の記録`}>
             {records.map((record) => {
                 let dateObj;
                 if (record.dateTime && typeof record.dateTime.toDate === 'function') {
@@ -78,7 +78,7 @@ const RecordList = ({ records, selectedDate, onDelete }) => {
                                         openDialog(); // Open the confirmation dialog
                                     }}
                                 >
-                                    Delete
+                                    削除
                                 </Button>
                             }
                         />

@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
@@ -44,7 +42,7 @@ const HourChart = ({ records }) => {
         labels: Array.from({ length: 24 }, (_, i) => `${i}:00`), // Create labels for each hour (0-23)
         datasets: [
             {
-                label: 'Records per hour',
+                label: '回数',
                 data: hoursCount,
                 backgroundColor,
                 borderColor,
@@ -65,7 +63,7 @@ const HourChart = ({ records }) => {
             },
             title: {
                 display: true,
-                text: 'Records per Hour',
+                text: '1時間あたりの回数',
                 color: textColor, // Set title color based on theme
             },
         },
@@ -73,7 +71,7 @@ const HourChart = ({ records }) => {
             x: {
                 title: {
                     display: true,
-                    text: 'Hours',
+                    text: '時間',
                     color: textColor, // Set x-axis title color based on theme
                 },
                 ticks: {
@@ -83,7 +81,7 @@ const HourChart = ({ records }) => {
             y: {
                 title: {
                     display: true,
-                    text: 'Number of Records',
+                    text: '回数',
                     color: textColor, // Set y-axis title color based on theme
                 },
                 beginAtZero: true,

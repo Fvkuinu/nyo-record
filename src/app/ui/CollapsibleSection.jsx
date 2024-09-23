@@ -24,7 +24,7 @@ const CollapsibleSection = ({ title, children }) => {
     return (
         <div className="mb-6">
             {/* Title with a toggle button (inverse triangle) */}
-            <div className="flex justify-between items-center mb-2">
+            <div className="flex justify-between items-center mb-2 mx-3">
                 <h2 className="text-lg font-semibold">{title}</h2>
                 <motion.button
                     onClick={toggleCollapse}
