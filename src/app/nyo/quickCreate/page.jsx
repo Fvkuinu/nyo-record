@@ -70,7 +70,7 @@ export default function SaveTimeButton() {
         disabled={isButtonDisabled || isSubmitting} // 一度押したら無効化
         className="w-40 h-40 rounded-full bg-blue-600 text-white text-xl font-bold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-blue-700 dark:hover:bg-blue-800"
       >
-        {isSubmitting ? '送信中...' : '時間を保存'}
+        {isSubmitting ? '送信中...' : '現在の時間を記録'}
       </Button>
       <ModalSpinner isLoading={isSubmitting} /> {/* 送信中にスピナーを表示 */}
     </div>

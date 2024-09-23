@@ -17,7 +17,7 @@ const RecordList = ({ records, selectedDate, onDelete }) => {
     }
 
     if (records.length === 0) {
-        return <p className="text-gray-500">No records for the selected date.</p>;
+        return <p className="text-gray-500">選択された日には記録がありません</p>;
     }
 
     // Handle record deletion and feedback
@@ -87,14 +87,14 @@ const RecordList = ({ records, selectedDate, onDelete }) => {
             })}
 
             {/* Confirmation dialog */}
-            <Dialog isOpen={isOpen} onClose={closeDialog} title="Confirm Deletion">
-                <p className="mb-4">Are you sure you want to delete this record?</p>
+            <Dialog isOpen={isOpen} onClose={closeDialog} title="削除の確認">
+                <p className="mb-4">このレコードを本当に削除してもよろしいですか？</p>
                 <div className="flex justify-end space-x-2">
                     <Button variant="secondary" onClick={closeDialog}>
-                        Cancel
+                        キャンセル
                     </Button>
                     <Button variant="danger" onClick={confirmAndDelete}>
-                        Delete
+                        削除
                     </Button>
                 </div>
             </Dialog>

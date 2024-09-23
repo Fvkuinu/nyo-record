@@ -8,9 +8,9 @@ const AnalyticsFilters = ({ filterType, setFilterType, selectedDate, setSelected
         <div className="mb-4 space-y-4">
             {/* 時間範囲セレクター */}
             <div>
-                <label className="block mb-1">Select Time Range:</label>
+                <label className="block mb-1">時間範囲</label>
                 <Dropdown
-                    options={['day', 'week', 'month', 'year']}
+                    options={['日', '週', '月', '年']}
                     selected={filterType}
                     onChange={setFilterType}
                 />
@@ -18,7 +18,7 @@ const AnalyticsFilters = ({ filterType, setFilterType, selectedDate, setSelected
 
             {/* 日付セレクター */}
             <div>
-                <label className="block mb-1">Select Date:</label>
+                <label className="block mb-1">日付を選択</label>
                 <Input
                     name="selectedDate"
                     type="date"
@@ -29,9 +29,9 @@ const AnalyticsFilters = ({ filterType, setFilterType, selectedDate, setSelected
 
             {/* グラフタイプセレクター */}
             <div>
-                <label className="block mb-1">Chart Type:</label>
+                <label className="block mb-1">グラフの種類</label>
                 <Dropdown
-                    options={['bar', 'line']}
+                    options={['棒グラフ', '折れ線グラフ']}
                     selected={chartType}
                     onChange={setChartType}
                 />
