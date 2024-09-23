@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
-import { useToast } from '@chakra-ui/react'; // Toastのインポート
-import CustomButton from '@/app/ui/CustomButton'; // CustomButtonコンポーネントをインポート
+import { useToast } from '@chakra-ui/react'; // Toast import
+import Button from '@/app/ui/Button'; // Button component
 import { createRecord } from '@/app/lib/nyoRecordController'; // Firebaseへの記録追加用関数
-import ModalSpinner from '@/app/ui/ModalSpinner'; // スピナーコンポーネント
+import ModalSpinner from '@/app/ui/ModalSpinner'; // Spinner component
 
 export default function SaveTimeButton() {
   const [isSubmitting, setIsSubmitting] = useState(false); // 送信中かどうか
@@ -65,21 +65,13 @@ export default function SaveTimeButton() {
 
   return (
     <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-900 dark:text-gray-100">
-      <CustomButton
+      <Button
         onClick={handleButtonClick}
-        disabled={isButtonDisabled || isSubmitting}
-        color="primary"
-        size="xl"
-        radius="full"
-        css={{
-          width: '10rem', // w-40は約10rem
-          height: '10rem', // h-40は約10rem
-          fontSize: '1.25rem', // text-xlは約1.25rem
-          fontWeight: 'bold', // font-bold
-        }}
+        disabled={isButtonDisabled || isSubmitting} // 一度押したら無効化
+        className="w-40 h-40 rounded-full bg-blue-600 text-white text-xl font-bold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-blue-700 dark:hover:bg-blue-800"
       >
         {isSubmitting ? '送信中...' : '現在の時間を記録'}
-      </CustomButton>
+      </Button>
       <ModalSpinner isLoading={isSubmitting} /> {/* 送信中にスピナーを表示 */}
     </div>
   );

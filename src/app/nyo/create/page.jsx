@@ -2,95 +2,99 @@
 
 import { useState } from 'react';
 import { getAuth } from 'firebase/auth';
-import { useToast } from '@chakra-ui/react';
-import Input from '@/app/ui/Input';
-import DateTimePicker from '@/app/ui/DateTimePicker';
-import Button from '@/app/ui/Button';
-import ModalSpinner from '@/app/ui/ModalSpinner';
-import { createRecord } from '@/app/lib/nyoRecordController';
+import { useToast } from '@chakra-ui/react'; // Toast import
+import Input from '@/app/ui/InputField'; // User input component
+import Button from '@/app/ui/Button'; // Button component
+import ModalSpinner from '@/app/ui/ModalSpinner'; // Spinner component
+import { createRecord } from '@/app/lib/nyoRecordController'; // Record creation function
 
 export default function AddRecord() {
-  const [remarks, setRemarks] = useState('');
-  const [dateTime, setDateTime] = useState(new Date());
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const toast = useToast();
+    const [remarks, setRemarks] = useState(''); // State for remarks input
+    const [dateTime, setDateTime] = useState(''); // State for date-time input
+    const [isSubmitting, setIsSubmitting] = useState(false); // Submitting state
+    const toast = useToast(); // Initialize toast
 
-  const auth = getAuth();
+    const auth = getAuth(); // Firebase Auth instance
 
-  const handleAddRecord = async () => {
-    setIsSubmitting(true);
-    const user = auth.currentUser;
+    // Function to handle adding a new record
+    const handleAddRecord = async () => {
+        setIsSubmitting(true); // Set submitting flag
+        const user = auth.currentUser; // Get the current logged-in user
 
-    if (!user) {
-      toast({
-        title: 'ログインが必要です。',
-        description: '操作を続けるにはログインが必要です。',
-        status: 'warning',
-        duration: 4000,
-        isClosable: true,
-        position: 'bottom-right',
-      });
-      setIsSubmitting(false);
-      return;
-    }
+        if (!user) {
+            toast({
+                title: 'ログインが必要です。',
+                description: '操作を続けるにはログインが必要です。',
+                status: 'warning',
+                duration: 4000,
+                isClosable: true,
+                position: 'bottom-right',
+            });
+            setIsSubmitting(false);
+            return;
+        }
 
-    try {
-      if (!dateTime || isNaN(dateTime.getTime())) {
-        throw new Error('無効な日時です。');
-      }
+        try {
+            const date = new Date(dateTime);
+            if (isNaN(date.getTime())) {
+                throw new Error('無効な日時です。');
+            }
 
-      await createRecord(user.uid, dateTime, remarks);
+            await createRecord(user.uid, date, remarks);
 
-      toast({
-        title: 'レコードが追加されました。',
-        description: '新しいレコードが正常に追加されました。',
-        status: 'success',
-        duration: 4000,
-        isClosable: true,
-        position: 'bottom-right',
-      });
+            // Show success toast
+            toast({
+                title: 'レコードが追加されました。',
+                description: '新しいレコードが正常に追加されました。',
+                status: 'success',
+                duration: 4000,
+                isClosable: true,
+                position: 'bottom-right',
+            });
 
-      setIsSubmitting(false);
-    } catch (error) {
-      console.error('エラーが発生しました:', error);
-      toast({
-        title: 'エラーが発生しました。',
-        description: `レコードの追加に失敗しました: ${error.message}`,
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-        position: 'bottom-right',
-      });
-      setIsSubmitting(false);
-    }
-  };
+            setIsSubmitting(false);
+        } catch (error) {
+            console.error('エラーが発生しました:', error);
+            toast({
+                title: 'エラーが発生しました。',
+                description: `レコードの追加に失敗しました: ${error.message}`,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'bottom-right',
+            });
+            setIsSubmitting(false);
+        }
+    };
 
-  return (
-    <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-900 dark:text-gray-100">
-      <div className="max-w-md w-full space-y-8">
-        <DateTimePicker
-          name="dateTime"
-          label="日時を選択"
-          value={dateTime}
-          onChange={(newValue) => setDateTime(newValue)}
-        />
-        <Input
-          name="remarks"
-          type="text"
-          label="備考"
-          placeholder="備考を入力"
-          onChange={(e) => setRemarks(e.target.value)}
-        />
+    return (
+        <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 dark:bg-gray-900 dark:text-gray-100">
+            <div className="max-w-md w-full space-y-8">
+                <Input
+                    name="dateTime"
+                    type="datetime-local" // Date-time input field
+                    label="日時"
+                    className="dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200" // Dark mode styles for input
+                    onChange={(e) => setDateTime(e.target.value)} // Input for date-time
+                />
+                <Input
+                    name="remarks"
+                    type="text"
+                    label="備考"
+                    placeholder="備考を入力"
+                    className="dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200" // Dark mode styles for input
+                    onChange={(e) => setRemarks(e.target.value)} // Input for remarks
+                />
 
-        <Button
-          onClick={handleAddRecord}
-          disabled={isSubmitting}
-          className="dark:bg-blue-700 dark:hover:bg-blue-800"
-        >
-          {isSubmitting ? '送信中...' : 'レコードを追加'}
-        </Button>
-      </div>
-      <ModalSpinner isLoading={isSubmitting} />
-    </div>
-  );
+                <Button
+                    onClick={handleAddRecord} // Add record on button click
+                    disabled={isSubmitting} // Disable button while submitting
+                    className="dark:bg-blue-700 dark:hover:bg-blue-800" // Dark mode button styles
+                >
+                    {isSubmitting ? '送信中...' : 'レコードを追加'}
+                </Button>
+            </div>
+            <ModalSpinner isLoading={isSubmitting} /> {/* Show spinner while submitting */}
+        </div>
+    );
 }
