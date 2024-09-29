@@ -67,6 +67,42 @@ export const getRecordsByDate = async (userId, date) => {
     }
 };
 
+
+/**
+ * ユーザーIDと日付で尿記録を取得する関数
+ * @param {string} userId - ユーザーID
+ * @param {Date} startDate - 取得したい日付、はじまり
+ * @param {Date} endDate - 取得したい日付、おわり
+ * @returns {Promise<Array>} その日の記録データの配列
+ */
+export const getRecordsByStartAndEndDate = async (userId, startDate, endDate) => {
+    try {
+        // 日付の開始と終了を定義
+        const startOfDay = new Date(startDate);
+        startOfDay.setHours(0, 0, 0, 0);
+        
+        const endOfDay = new Date(endDate);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        console.log('Fetching records for user:', userId, ' from ', startOfDay, ' to ', endOfDay);
+
+        const q = query(
+            recordCollection,
+            where('userId', '==', userId),
+            where('dateTime', '>=', startOfDay),
+            where('dateTime', '<=', endOfDay)
+        );
+        
+        const recordsSnapshot = await getDocs(q);
+        const records = recordsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        console.log('Fetched records by date:', records);
+        return records;
+    } catch (error) {
+        console.error('Error fetching records by date:', error);
+        throw new Error('指定期間のレコード取得に失敗しました');
+    }
+};
+
 /**
  * 尿記録を作成する関数
  * @param {string} userId - ユーザーID

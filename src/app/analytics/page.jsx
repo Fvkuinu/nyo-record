@@ -13,8 +13,17 @@ const AnalyticsPage = () => {
     const auth = getAuth();
     const user = auth.currentUser;
 
+    // Helper function to get today's date in YYYY-MM-DD format
+    const getTodayDate = () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Add leading zero
+        const day = String(today.getDate()).padStart(2, '0'); // Add leading zero
+        return `${year}-${month}-${day}`;
+    };
+    
     const [filterType, setFilterType] = useState('日');
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(getTodayDate());
     const [chartType, setChartType] = useState('棒グラフ');
 
     const { records, isLoading, error } = useRecords(user?.uid, filterType, selectedDate);

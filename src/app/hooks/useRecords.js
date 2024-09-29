@@ -2,32 +2,75 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getAllRecordsByUserId, deleteRecord } from '@/app/lib/nyoRecordController';
+import { getAllRecordsByUserId, getRecordsByStartAndEndDate, deleteRecord } from '@/app/lib/nyoRecordController';
 import {
     startOfWeek,
     endOfWeek,
     startOfMonth,
     endOfMonth,
     startOfYear,
-    endOfYear
+    endOfYear,
+    startOfDay,
+    endOfDay
 } from 'date-fns';
 
+/**
+ * カスタムフック: ユーザーの尿記録を取得および管理する
+ * @param {string} userId - ユーザーID
+ * @param {string} filterType - フィルタの種類 ('日', '週', '月', '年')
+ * @param {Date} selectedDate - 選択された日付
+ * @returns {Object} レコード、イベント、ローディング状態、エラー、削除ハンドラ
+ */
 const useRecords = (userId, filterType, selectedDate) => {
-    const [allRecords, setAllRecords] = useState([]); // 全てのレコードを保存
     const [records, setRecords] = useState([]); // フィルタされたレコードを保存
     const [events, setEvents] = useState([]); // カレンダー用のイベント
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // 全てのレコードを一度だけ取得する
     useEffect(() => {
         if (!userId) return; // userId がない場合は処理を行わない
 
-        const fetchAllRecords = async () => {
+        const fetchRecords = async () => {
             setIsLoading(true);
+            setError(null);
             try {
-                const fetchedRecords = await getAllRecordsByUserId(userId);
-                setAllRecords(fetchedRecords); // 全てのレコードを保存
+                let fetchedRecords;
+
+                if (!filterType || !selectedDate) {
+                    // フィルタが指定されていない場合、全てのレコードを取得
+                    fetchedRecords = await getAllRecordsByUserId(userId);
+                } else {
+                    // フィルタが指定されている場合、開始日と終了日を計算
+                    let start, end;
+                    switch (filterType) {
+                        case '日':
+                            start = startOfDay(new Date(selectedDate));
+                            end = endOfDay(new Date(selectedDate));
+                            break;
+                        case '週':
+                            start = startOfWeek(new Date(selectedDate), { weekStartsOn: 1 }); // 月曜日開始
+                            end = endOfWeek(new Date(selectedDate), { weekStartsOn: 1 });
+                            break;
+                        case '月':
+                            start = startOfMonth(new Date(selectedDate));
+                            end = endOfMonth(new Date(selectedDate));
+                            break;
+                        case '年':
+                            start = startOfYear(new Date(selectedDate));
+                            end = endOfYear(new Date(selectedDate));
+                            break;
+                        default:
+                            // 未定義のフィルタタイプの場合は全てのレコードを取得
+                            //fetchedRecords = await getAllRecordsByUserId(userId);
+                    }
+
+                    // start と end が定義されている場合にフィルタされたレコードを取得
+                    if (start && end) {
+                        fetchedRecords = await getRecordsByStartAndEndDate(userId, start, end);
+                    }
+                }
+
+                setRecords(fetchedRecords);
 
                 // イベントの処理
                 const eventData = fetchedRecords.reduce((acc, record) => {
@@ -57,62 +100,23 @@ const useRecords = (userId, filterType, selectedDate) => {
                 setEvents(eventArray);
 
             } catch (err) {
+                console.error('Error fetching records:', err);
                 setError(err);
             } finally {
                 setIsLoading(false);
             }
         };
 
-        fetchAllRecords();
-    }, [userId]);
-
-    // フィルタされたレコードをセットする
-    useEffect(() => {
-        if (!selectedDate || !filterType || allRecords.length === 0) {
-            setRecords([]);
-            return;
-        }
-
-        let start, end;
-        switch (filterType) {
-            case '日':
-                start = new Date(selectedDate);
-                start.setHours(0, 0, 0, 0);
-                end = new Date(selectedDate);
-                end.setHours(23, 59, 59, 999);
-                break;
-            case '週':
-                start = startOfWeek(new Date(selectedDate), { weekStartsOn: 1 }); // 月曜日開始
-                end = endOfWeek(new Date(selectedDate), { weekStartsOn: 1 });
-                break;
-            case '月':
-                start = startOfMonth(new Date(selectedDate));
-                end = endOfMonth(new Date(selectedDate));
-                break;
-            case '年':
-                start = startOfYear(new Date(selectedDate));
-                end = endOfYear(new Date(selectedDate));
-                break;
-            default:
-                start = new Date(selectedDate);
-                end = new Date(selectedDate);
-        }
-
-        const filtered = allRecords.filter(record => {
-            const recordDate = record.dateTime.toDate();
-            return recordDate >= start && recordDate <= end;
-        });
-
-        setRecords(filtered);
-    }, [selectedDate, filterType, allRecords]);
+        fetchRecords();
+    }, [userId, filterType, selectedDate]);
 
     // レコード削除処理
     const handleDelete = async (recordId) => {
         try {
             await deleteRecord(recordId);
-            const updatedAllRecords = allRecords.filter((record) => record.id !== recordId);
-            setAllRecords(updatedAllRecords);
+            setRecords(prevRecords => prevRecords.filter(record => record.id !== recordId));
         } catch (err) {
+            console.error('Error deleting record:', err);
             setError(err);
         }
     };
